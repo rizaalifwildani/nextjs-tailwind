@@ -1,3 +1,43 @@
 {
-  "extends": "next/core-web-vitals"
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "next/core-web-vitals",
+    "plugin:prettier/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true,
+      "tsx": true
+    },
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "plugins": [
+    "react",
+    "@typescript-eslint"
+  ],
+  "ignorePatterns": ["ckeditor5/"],
+  "rules": {
+    "semi": [2, "never"],
+    "quotes": ["error", "double"],
+    "react/display-name": "off",
+    "react/react-in-jsx-scope": "off",
+    "react/no-unescaped-entities": "off",
+    "react/prop-types": 0,
+    "react-hooks/rules-of-hooks": "off",
+    "@next/next/no-page-custom-font": "off",
+    "@next/next/no-html-link-for-pages": "off",
+    "@next/next/no-img-element": "off",
+    "import/no-anonymous-default-export": "off",
+    "max-len": "off",
+    "no-control-regex": 0,
+    "import/prefer-default-export": "off", // Named export is easier to refactor automatically
+    "@typescript-eslint/no-unused-vars": "error"
+  }
 }

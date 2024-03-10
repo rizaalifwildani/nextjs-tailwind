@@ -1,0 +1,5 @@
+.gitignore
+public/*
+node_modules/*
+ckeditor5/*
+next.config.js
