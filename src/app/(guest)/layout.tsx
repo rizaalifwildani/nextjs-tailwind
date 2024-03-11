@@ -7,7 +7,7 @@ type Props = {
 export default function GuestLayout({ className = "", ...props }: Props) {
   return (
     /* <!-- ===== Main Content Start ===== --> */
-    <main>
+    <main className="guest-layout">
       <div className={`mx-auto max-w-screen-2xl ${className}`}>
         {props.children}
       </div>

@@ -1,4 +1,3 @@
-import AuthLayout from "@/components/layouts/AuthLayout"
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
@@ -6,12 +5,10 @@ export const metadata: Metadata = {
   description: "This is Next.js Template with Tailwind UI Framework",
 }
 
-export default function Home() {
+export default function HomePage() {
   return (
-    <>
-      <AuthLayout>
-        <h1>Home</h1>
-      </AuthLayout>
-    </>
+    <section className="home-page">
+      <h1>Home</h1>
+    </section>
   )
 }

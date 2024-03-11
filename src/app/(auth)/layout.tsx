@@ -1,7 +1,7 @@
 "use client"
+import Header from "@/components/layouts/Header"
+import Sidebar from "@/components/layouts/Sidebar"
 import React, { useState } from "react"
-import Header from "./header"
-import Sidebar from "./sidebar"
 
 type Props = {
   children: React.ReactNode
@@ -10,7 +10,7 @@ type Props = {
 export default function AuthLayout({ ...props }: Props) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   return (
-    <>
+    <main className="auth-layout">
       {/* <!-- ===== Page Wrapper Start ===== --> */}
       <div className="flex h-screen overflow-hidden">
         {/* <!-- ===== Sidebar Start ===== --> */}
@@ -34,6 +34,6 @@ export default function AuthLayout({ ...props }: Props) {
         {/* <!-- ===== Content Area End ===== --> */}
       </div>
       {/* <!-- ===== Page Wrapper End ===== --> */}
-    </>
+    </main>
   )
 }

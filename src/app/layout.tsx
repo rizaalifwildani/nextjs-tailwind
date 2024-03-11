@@ -1,6 +1,7 @@
 "use client"
 import "@/assets/styles/globals.css"
 import "@/assets/styles/satoshi.css"
+import "flatpickr/dist/flatpickr.min.css"
 
 export default function RootLayout({
   children,
