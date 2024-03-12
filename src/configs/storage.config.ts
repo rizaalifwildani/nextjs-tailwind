@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 type StorageConfigProps = {
   key: string
-  data: any | undefined
+  value: any | undefined
 }
 
 export type StorageThemeConfig = {
@@ -14,7 +14,7 @@ export default class StorageConfig {
 
   static async setItem({ ...props }: StorageConfigProps): Promise<boolean> {
     if (typeof window != "undefined") {
-      const data = Buffer.from(JSON.stringify(props.data)).toString("base64")
+      const data = Buffer.from(JSON.stringify(props.value)).toString("base64")
       window.localStorage.setItem(props.key, data)
       return true
     }

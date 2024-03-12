@@ -58,9 +58,6 @@ export default function Header(props: {
             </button>
             {/* <!-- Hamburger Toggle BTN --> */}
           </div>
-
-          {/* === FOR BREADCRUMB === */}
-          <h1>Breadcrumb</h1>
         </div>
 
         <div className="flex items-center gap-3 2xsm:gap-7">

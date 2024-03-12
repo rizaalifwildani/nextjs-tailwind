@@ -22,7 +22,7 @@ export default function CoreInput({
         return <CoreInputDateTime type="time" />
       default:
         return (
-          <>
+          <div className="core-input">
             {props.label && (
               <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                 {props.label}
@@ -33,24 +33,24 @@ export default function CoreInput({
                 type={type}
                 placeholder={props.placeholder}
                 className={`
+                w-full 
+                rounded
+                border-[1.5px] 
                 border-stroke 
-                focus:border-primary
-                active:border-primary 
-                disabled:bg-whiter 
-                dark:border-form-strokedark 
-                dark:bg-form-input 
-                dark:focus:border-primary 
-                  w-full 
-                  rounded
-                  border-[1.5px] 
-                  bg-transparent 
-                  px-4 
-                  py-2 
-                text-black 
-                  outline-none 
+                bg-transparent 
+                px-4 
+                py-2 
+                  text-black 
+                  outline-none
                   transition 
+                  focus:border-primary 
+                  active:border-primary 
                   disabled:cursor-default 
-                dark:text-white
+                disabled:bg-whiter 
+                  dark:border-form-strokedark 
+                  dark:bg-form-input 
+                  dark:text-white 
+                dark:focus:border-primary
                   ${className}
                 `}
               />
@@ -60,7 +60,7 @@ export default function CoreInput({
                 </span>
               )}
             </div>
-          </>
+          </div>
         )
     }
   }

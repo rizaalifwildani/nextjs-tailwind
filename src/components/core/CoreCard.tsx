@@ -7,7 +7,7 @@ export default function CoreCard({ padding = 20, ...props }: Props) {
   return (
     <div className="core-card">
       <div
-        className="border-stroke shadow-default dark:border-strokedark dark:bg-boxdark w-full rounded-sm border bg-white"
+        className="w-full rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark"
         style={{
           padding,
         }}

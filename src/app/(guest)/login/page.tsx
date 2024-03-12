@@ -1,4 +1,5 @@
 import CoreCard from "@/components/core/CoreCard"
+import CoreButton from "@/components/core/button/CoreButton"
 import CoreInput from "@/components/core/input/CoreInput"
 import { EnvelopeIcon, LockClosedIcon } from "@heroicons/react/24/outline"
 
@@ -33,10 +34,10 @@ export default function LoginPage() {
                 </div>
 
                 <div className="mb-5">
-                  <input
+                  <CoreButton
                     type="submit"
-                    value="Sign In"
-                    className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
+                    label="Sign In"
+                    className="h-10 w-full text-lg"
                   />
                 </div>
               </form>

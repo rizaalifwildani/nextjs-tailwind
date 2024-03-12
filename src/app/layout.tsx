@@ -1,6 +1,7 @@
 "use client"
 import "@/assets/styles/globals.css"
 import "@/assets/styles/satoshi.css"
+import useColorMode from "@/hooks/useColorMode"
 import "flatpickr/dist/flatpickr.min.css"
 
 export default function RootLayout({
@@ -8,6 +9,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  useColorMode()
   return (
     <html lang="en">
       <body suppressHydrationWarning={true}>

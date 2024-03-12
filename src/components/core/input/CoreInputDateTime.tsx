@@ -47,21 +47,21 @@ export default function CoreInputDateTime({
         <input
           className={`
             form-datepicker 
-          border-stroke
-          focus:border-primary
-          active:border-primary 
-          dark:border-form-strokedark 
-          dark:bg-form-input 
-          dark:focus:border-primary 
-            w-full 
-            rounded 
-            border-[1.5px] 
-            bg-transparent 
-            px-4 
+          w-full
+          rounded
+          border-[1.5px] 
+          border-stroke 
+          bg-transparent 
+          px-4 
             py-2 
             font-normal 
             outline-none 
-            transition
+            transition 
+            focus:border-primary 
+            active:border-primary 
+            dark:border-form-strokedark 
+            dark:bg-form-input 
+            dark:focus:border-primary
             ${className}
           `}
           placeholder={placeholder}

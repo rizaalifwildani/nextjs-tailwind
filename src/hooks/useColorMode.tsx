@@ -1,22 +1,24 @@
 import StorageConfig from "@/configs/storage.config"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
+import useThemeState from "./useTheme"
 
 const useColorMode = () => {
-  const [colorMode, setColorMode] = useState(() => {
-    const item = StorageConfig.getItem(StorageConfig.COLOR_THEME)
-    return item ?? "light"
-  })
+  const { mode, setMode } = useThemeState()
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const item = StorageConfig.getItem(StorageConfig.COLOR_THEME)
+      setMode(item)
+    }
+    fetchData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     const className = "dark"
     const bodyClass = window.document.body.classList
-
-    colorMode === "dark"
-      ? bodyClass.add(className)
-      : bodyClass.remove(className)
-  }, [colorMode])
-
-  return [colorMode, setColorMode]
+    mode === "dark" ? bodyClass.add(className) : bodyClass.remove(className)
+  }, [mode])
 }
 
 export default useColorMode
