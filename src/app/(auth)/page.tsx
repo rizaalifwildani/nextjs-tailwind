@@ -1,8 +1,8 @@
-import Breadcrumb from "@/components/core/CoreBreadcrumb"
-import Dashboard from "@/components/pages/Dashboard"
+import CoreBreadcrumb from "@/components/core/CoreBreadcrumb"
+import Dashboard from "@/components/modules/Dashboard"
 import { ProductModel } from "@/models/product.model"
 
-export default function HomePage() {
+export default function RootPage() {
   const data: ProductModel[] = [
     {
       id: "95cf241e-fa50-4361-99a5-be04479bdc77",
@@ -14,8 +14,8 @@ export default function HomePage() {
   ]
 
   return (
-    <section className="home-page">
-      <Breadcrumb pageName="Dashboard" />
+    <section className="root-page">
+      <CoreBreadcrumb pageName="Dashboard" />
       <Dashboard data={data} />
     </section>
   )
