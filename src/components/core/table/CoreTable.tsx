@@ -11,7 +11,7 @@ import { ColDef, RowClickedEvent } from "ag-grid-community"
 import "ag-grid-community/styles/ag-grid.css"
 import "ag-grid-community/styles/ag-theme-quartz.css"
 import { AgGridReact } from "ag-grid-react"
-import { RefObject, useCallback, useMemo } from "react"
+import { useCallback, useMemo, useRef } from "react"
 import CoreButton from "../button/CoreButton"
 import CoreInputSelect from "../input/CoreInputSelect"
 
@@ -19,8 +19,7 @@ export interface ICoreTable {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   rows: any[]
   cols: ColDef[]
-  tableRef: RefObject<AgGridReact>
-  onExportCsv?: () => void
+  onExportCsv?: Promise<void>
   onRowClicked?: (e: RowClickedEvent) => void
   pagination?: ICoreTablePagination
 }
@@ -38,6 +37,8 @@ export interface ICoreTablePagination {
 export default function CoreTable({ ...props }: ICoreTable) {
   const { mode } = useThemeState()
 
+  const tableRef = useRef<AgGridReact>(null)
+
   // Apply settings across all columns
   const defaultColDef = useMemo<ColDef>(() => {
     return {
@@ -47,9 +48,11 @@ export default function CoreTable({ ...props }: ICoreTable) {
     }
   }, [])
 
-  const handleExportCSV = useCallback(() => {
+  const handleExportCSV = useCallback(async () => {
     if (props.onExportCsv) {
-      props.onExportCsv()
+      await props.onExportCsv.then(() => {
+        tableRef.current!.api.exportDataAsCsv()
+      })
     }
   }, [props])
 
@@ -94,7 +97,7 @@ export default function CoreTable({ ...props }: ICoreTable) {
           }}
         >
           <AgGridReact
-            ref={props.tableRef}
+            ref={tableRef}
             rowData={props.rows}
             columnDefs={props.cols}
             defaultColDef={defaultColDef}
