@@ -1,5 +1,9 @@
 {
-  "name": "pla-dashboard",
+  "name": "next-tailwind",
+  "owner": "Riza Alif Wildani",
+  "author": "Riza Alif Wildani",
+  "email": "rizaalifofficial@gmail.com",
+  "license": "MIT",
   "version": "0.1.0",
   "private": true,
   "scripts": {

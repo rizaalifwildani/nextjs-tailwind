@@ -1,6 +1,12 @@
 import CoreBreadcrumb from "@/components/core/CoreBreadcrumb"
 import Dashboard from "@/components/modules/Dashboard"
 import { ProductModel } from "@/models/product.model"
+import { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Next Tailwind",
+  description: "This is Next.js Template with Tailwind UI Framework",
+}
 
 export default function RootPage() {
   const data: ProductModel[] = [
