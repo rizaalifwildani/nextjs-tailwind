@@ -46,7 +46,7 @@ export default function Dashboard({ ...props }: Props) {
       pagination={{
         currentPage: 1,
         offset: 0,
-        totalData: 20,
+        totalData: 1,
         totalPage: 1,
         onOffsetChanged: (e) => {
           console.log(e)

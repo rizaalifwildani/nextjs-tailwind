@@ -149,10 +149,10 @@ export default function CoreTable({ height = "60vh", ...props }: ICoreTable) {
                 />
               </div>
               <div className="flex items-center gap-1">
-                <span className="font-bold">{props.pagination.offset}</span>
+                <span className="font-bold">{props.pagination.offset + 1}</span>
                 <span className="font-normal">to</span>
                 <span className="font-bold">
-                  {props.pagination.offset + (props.pagination.perPage ?? 20)}
+                  {props.pagination.offset + props.rows.length}
                 </span>
                 <span className="font-normal">of</span>
                 <span className="font-bold">{props.pagination.totalData}</span>
@@ -160,7 +160,7 @@ export default function CoreTable({ height = "60vh", ...props }: ICoreTable) {
               <div className="flex items-center gap-3">
                 {/* === PREV BUTTON === */}
                 <ChevronDoubleLeftIcon
-                  className={`h-5 w-5 cursor-pointer ${props.pagination.currentPage > 1 ? "text-black" : "text-stroke"}`}
+                  className={`h-5 w-5 ${props.pagination.currentPage > 1 ? "cursor-pointer" : "cursor-not-allowed"}`}
                   onClick={() => {
                     if (props.pagination) {
                       props.pagination.onPageChanged("1")
@@ -168,7 +168,7 @@ export default function CoreTable({ height = "60vh", ...props }: ICoreTable) {
                   }}
                 />
                 <ChevronLeftIcon
-                  className={`h-5 w-5 cursor-pointer ${props.pagination.currentPage > 1 ? "text-black" : "text-stroke"}`}
+                  className={`h-5 w-5 ${props.pagination.currentPage > 1 ? "cursor-pointer" : "cursor-not-allowed"}`}
                   onClick={handlePrev}
                 />
                 {/* === END OF PREV BUTTON === */}
@@ -186,11 +186,11 @@ export default function CoreTable({ height = "60vh", ...props }: ICoreTable) {
 
                 {/* === NEXT BUTTON === */}
                 <ChevronRightIcon
-                  className={`h-5 w-5 cursor-pointer ${props.pagination.currentPage < props.pagination.totalPage ? "text-black" : "text-stroke"}`}
+                  className={`h-5 w-5 ${props.pagination.currentPage < props.pagination.totalPage ? "cursor-pointer" : "cursor-not-allowed"}`}
                   onClick={handleNext}
                 />
                 <ChevronDoubleRightIcon
-                  className={`h-5 w-5 cursor-pointer ${props.pagination.currentPage < props.pagination.totalPage ? "text-black" : "text-stroke"}`}
+                  className={`h-5 w-5 ${props.pagination.currentPage < props.pagination.totalPage ? "cursor-pointer" : "cursor-not-allowed"}`}
                   onClick={() => {
                     if (props.pagination) {
                       props.pagination.onPageChanged(
