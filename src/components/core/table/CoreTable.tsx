@@ -7,7 +7,13 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
 } from "@heroicons/react/24/outline"
-import { ColDef, RowClickedEvent } from "ag-grid-community"
+import {
+  ColDef,
+  RowClickedEvent,
+  SizeColumnsToContentStrategy,
+  SizeColumnsToFitGridStrategy,
+  SizeColumnsToFitProvidedWidthStrategy,
+} from "ag-grid-community"
 import "ag-grid-community/styles/ag-grid.css"
 import "ag-grid-community/styles/ag-theme-quartz.css"
 import { AgGridReact } from "ag-grid-react"
@@ -22,6 +28,11 @@ export interface ICoreTable {
   onExportCsv?: Promise<void>
   onRowClicked?: (e: RowClickedEvent) => void
   pagination?: ICoreTablePagination
+  autoSizeStrategy?:
+    | SizeColumnsToFitGridStrategy
+    | SizeColumnsToFitProvidedWidthStrategy
+    | SizeColumnsToContentStrategy
+  height?: string | number
 }
 
 export interface ICoreTablePagination {
@@ -34,7 +45,7 @@ export interface ICoreTablePagination {
   onPageChanged: (e: string) => void
 }
 
-export default function CoreTable({ ...props }: ICoreTable) {
+export default function CoreTable({ height = "60vh", ...props }: ICoreTable) {
   const { mode } = useThemeState()
 
   const tableRef = useRef<AgGridReact>(null)
@@ -93,7 +104,7 @@ export default function CoreTable({ ...props }: ICoreTable) {
         <div
           className={"ag-theme-quartz w-full"}
           style={{
-            height: "70vh",
+            height: height,
           }}
         >
           <AgGridReact
@@ -103,9 +114,11 @@ export default function CoreTable({ ...props }: ICoreTable) {
             defaultColDef={defaultColDef}
             pagination={false}
             onRowClicked={props.onRowClicked}
-            autoSizeStrategy={{
-              type: "fitGridWidth",
-            }}
+            autoSizeStrategy={
+              props.autoSizeStrategy ?? {
+                type: "fitGridWidth",
+              }
+            }
             suppressExcelExport={props.onExportCsv ? true : false}
             alwaysShowHorizontalScroll={true}
           />
