@@ -73,7 +73,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
     >
       {/* <!-- SIDEBAR HEADER --> */}
       <div
-        className="flex items-center justify-between gap-2 border-b px-6 py-5.5 lg:py-6.5"
+        className="flex items-center justify-between gap-2 border-b border-slate-600 px-6 py-5.5 lg:py-6.5"
         style={{
           height: "70px",
         }}
