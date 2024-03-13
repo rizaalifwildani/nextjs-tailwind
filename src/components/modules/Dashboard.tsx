@@ -35,7 +35,7 @@ export default function Dashboard({ ...props }: Props) {
       onRowClicked={(e) => {
         console.log(e.data)
       }}
-      onExportCsv={
+      onExportCsv={() =>
         new Promise<void>((resolve) => {
           setTimeout(() => {
             console.log("exported")

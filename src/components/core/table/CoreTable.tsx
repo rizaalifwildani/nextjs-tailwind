@@ -25,7 +25,7 @@ export interface ICoreTable {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   rows: any[]
   cols: ColDef[]
-  onExportCsv?: Promise<void>
+  onExportCsv?: () => Promise<void>
   onRowClicked?: (e: RowClickedEvent) => void
   pagination?: ICoreTablePagination
   autoSizeStrategy?:
@@ -61,7 +61,7 @@ export default function CoreTable({ height = "60vh", ...props }: ICoreTable) {
 
   const handleExportCSV = useCallback(async () => {
     if (props.onExportCsv) {
-      await props.onExportCsv.then(() => {
+      await props.onExportCsv().then(() => {
         tableRef.current!.api.exportDataAsCsv()
       })
     }
@@ -126,7 +126,6 @@ export default function CoreTable({ height = "60vh", ...props }: ICoreTable) {
           {/* === CUSTOM PAGINATION === */}
           {props.pagination && (
             <div
-              className="flex items-center justify-end gap-6"
               style={{
                 border:
                   "1px solid color-mix(in srgb, transparent, var(--ag-foreground-color) 15%)",
@@ -135,71 +134,79 @@ export default function CoreTable({ height = "60vh", ...props }: ICoreTable) {
                 borderRadius: "0rem 0rem 0.25rem 0.25rem",
               }}
             >
-              <div className="flex items-center gap-1">
-                <span className="font-normal">Page Size :</span>
-                <CoreInputSelect
-                  initialValue={props.pagination.perPage ?? 20}
-                  options={[
-                    { label: "10", value: 10 },
-                    { label: "20", value: 20 },
-                    { label: "50", value: 50 },
-                    { label: "100", value: 100 },
-                  ]}
-                  onChange={props.pagination.onOffsetChanged}
-                />
-              </div>
-              <div className="flex items-center gap-1">
-                <span className="font-bold">{props.pagination.offset + 1}</span>
-                <span className="font-normal">to</span>
-                <span className="font-bold">
-                  {props.pagination.offset + props.rows.length}
-                </span>
-                <span className="font-normal">of</span>
-                <span className="font-bold">{props.pagination.totalData}</span>
-              </div>
-              <div className="flex items-center gap-3">
-                {/* === PREV BUTTON === */}
-                <ChevronDoubleLeftIcon
-                  className={`h-5 w-5 ${props.pagination.currentPage > 1 ? "cursor-pointer" : "cursor-not-allowed"}`}
-                  onClick={() => {
-                    if (props.pagination) {
-                      props.pagination.onPageChanged("1")
-                    }
-                  }}
-                />
-                <ChevronLeftIcon
-                  className={`h-5 w-5 ${props.pagination.currentPage > 1 ? "cursor-pointer" : "cursor-not-allowed"}`}
-                  onClick={handlePrev}
-                />
-                {/* === END OF PREV BUTTON === */}
-
-                <div className="flex gap-1">
-                  <span className="font-normal">Page</span>
-                  <span className="font-bold">
-                    {props.pagination.currentPage}
-                  </span>
-                  <span className="font-normal">of</span>
-                  <span className="font-bold">
-                    {props.pagination.totalPage}
-                  </span>
+              <div className="grid grid-cols-12 gap-3">
+                <div className="col-span-12 flex items-center justify-center gap-1 md:col-span-4 md:justify-start">
+                  <span className="font-normal">Page Size :</span>
+                  <CoreInputSelect
+                    initialValue={props.pagination.perPage ?? 20}
+                    options={[
+                      { label: "10", value: 10 },
+                      { label: "20", value: 20 },
+                      { label: "50", value: 50 },
+                      { label: "100", value: 100 },
+                    ]}
+                    onChange={props.pagination.onOffsetChanged}
+                  />
                 </div>
+                <div className="col-span-12 flex items-center justify-center gap-6 md:col-span-8 md:justify-end">
+                  <div className="flex items-center gap-1">
+                    <span className="font-bold">
+                      {props.pagination.offset + 1}
+                    </span>
+                    <span className="font-normal">to</span>
+                    <span className="font-bold">
+                      {props.pagination.offset + props.rows.length}
+                    </span>
+                    <span className="font-normal">of</span>
+                    <span className="font-bold">
+                      {props.pagination.totalData}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    {/* === PREV BUTTON === */}
+                    <ChevronDoubleLeftIcon
+                      className={`h-5 w-5 ${props.pagination.currentPage > 1 ? "cursor-pointer" : "cursor-not-allowed"}`}
+                      onClick={() => {
+                        if (props.pagination) {
+                          props.pagination.onPageChanged("1")
+                        }
+                      }}
+                    />
+                    <ChevronLeftIcon
+                      className={`h-5 w-5 ${props.pagination.currentPage > 1 ? "cursor-pointer" : "cursor-not-allowed"}`}
+                      onClick={handlePrev}
+                    />
+                    {/* === END OF PREV BUTTON === */}
 
-                {/* === NEXT BUTTON === */}
-                <ChevronRightIcon
-                  className={`h-5 w-5 ${props.pagination.currentPage < props.pagination.totalPage ? "cursor-pointer" : "cursor-not-allowed"}`}
-                  onClick={handleNext}
-                />
-                <ChevronDoubleRightIcon
-                  className={`h-5 w-5 ${props.pagination.currentPage < props.pagination.totalPage ? "cursor-pointer" : "cursor-not-allowed"}`}
-                  onClick={() => {
-                    if (props.pagination) {
-                      props.pagination.onPageChanged(
-                        `${props.pagination.totalPage}`,
-                      )
-                    }
-                  }}
-                />
-                {/* === END OF NEXT BUTTON === */}
+                    <div className="flex gap-1">
+                      <span className="font-normal">Page</span>
+                      <span className="font-bold">
+                        {props.pagination.currentPage}
+                      </span>
+                      <span className="font-normal">of</span>
+                      <span className="font-bold">
+                        {props.pagination.totalPage}
+                      </span>
+                    </div>
+
+                    {/* === NEXT BUTTON === */}
+                    <ChevronRightIcon
+                      className={`h-5 w-5 ${props.pagination.currentPage < props.pagination.totalPage ? "cursor-pointer" : "cursor-not-allowed"}`}
+                      onClick={handleNext}
+                    />
+                    <ChevronDoubleRightIcon
+                      className={`h-5 w-5 ${props.pagination.currentPage < props.pagination.totalPage ? "cursor-pointer" : "cursor-not-allowed"}`}
+                      onClick={() => {
+                        if (props.pagination) {
+                          props.pagination.onPageChanged(
+                            `${props.pagination.totalPage}`,
+                          )
+                        }
+                      }}
+                    />
+                    {/* === END OF NEXT BUTTON === */}
+                  </div>
+                </div>
               </div>
             </div>
           )}

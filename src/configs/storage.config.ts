@@ -11,6 +11,7 @@ export type StorageThemeConfig = {
 
 export default class StorageConfig {
   static COLOR_THEME = "color-theme"
+  static SIDEBAR = "sidebar"
 
   static async setItem({ ...props }: StorageConfigProps): Promise<boolean> {
     if (typeof window != "undefined") {

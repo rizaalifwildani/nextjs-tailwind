@@ -2,6 +2,7 @@
 "use client"
 
 import Logo from "@/assets/images/logo.svg"
+import StorageConfig from "@/configs/storage.config"
 import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
@@ -52,7 +53,10 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
   })
 
   useEffect(() => {
-    localStorage.setItem("sidebar-expanded", sidebarExpanded.toString())
+    StorageConfig.setItem({
+      key: StorageConfig.SIDEBAR,
+      value: sidebarExpanded.toString(),
+    })
     if (sidebarExpanded) {
       document.querySelector("body")?.classList.add("sidebar-expanded")
     } else {
