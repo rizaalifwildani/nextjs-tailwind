@@ -1,0 +1,15 @@
+[
+  {
+    "id": "13ff231e-bb12-2321-89a5-be01479bda13",
+    "name": "Jhon Sales",
+    "phoneNumber": "082322153791",
+    "password": "1234",
+    "role": {
+      "id": "95cf241e-fa50-4361-99a5-be04479bdc73",
+      "name": "lender",
+      "displayName": "Lender",
+      "description": "User can manage sales menu",
+      "permissions": []
+    }
+  }
+]

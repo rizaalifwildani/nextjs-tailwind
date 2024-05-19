@@ -1,0 +1,32 @@
+[
+  {
+    "id": "95cf241e-fa50-4361-99a5-be04479bdc77",
+    "salesId": "BD1372 - ANGGITA",
+    "companyId": "IAPS0128 - PT INTEGRASI ABADI PERKASA SENTOSA",
+    "productId": "02",
+    "applicationId": "IAPS0128-0927-425237",
+    "customerName": "Prabu Sutomo",
+    "ktp": "21421424521312",
+    "phoneNumber": "02145243241",
+    "whatsAppNumber": "08592541224",
+    "email": "sutomo.prabu@example.com",
+    "submissionAmount": 2000000,
+    "submissionDate": "2024-05-17 00:33:29",
+    "status": "disburse"
+  },
+  {
+    "id": "95cf241e-fa50-4361-99a5-be04479bdc78",
+    "salesId": "BD1372 - BAGUS",
+    "companyId": "IAPS0128 - PT INTEGRASI ABADI PERKASA SENTOSA",
+    "productId": "02",
+    "applicationId": "IAPS0128-0927-425237",
+    "customerName": "Prabu Sutomo",
+    "ktp": "21421424521312",
+    "phoneNumber": "02145243241",
+    "whatsAppNumber": "08592541224",
+    "email": "sutomo.prabu@example.com",
+    "submissionAmount": 2000000,
+    "submissionDate": "2024-05-17 00:33:29",
+    "status": "disburse"
+  }
+]

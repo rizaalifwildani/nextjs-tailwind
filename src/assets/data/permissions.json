@@ -1,0 +1,20 @@
+[
+  {
+    "id": "85cf241e-fa50-4361-99a5-be04479bdc77",
+    "name": "submission",
+    "displayName": "Submission",
+    "description": "User can access the submission menu"
+  },
+  {
+    "id": "85cf241e-fa50-4361-99a5-be04479bdc76",
+    "name": "report",
+    "displayName": "Report",
+    "description": "User can access the report menu"
+  },
+  {
+    "id": "85cf241e-fa50-4361-99a5-be04479bdc75",
+    "name": "user-management",
+    "displayName": "User Management",
+    "description": "User can access the user management menu"
+  }
+]

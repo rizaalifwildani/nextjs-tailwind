@@ -1,3 +1,4 @@
+import { UserResponse } from "@/models/response/user.response"
 import { getIronSession } from "iron-session"
 import { cookies } from "next/headers"
 
@@ -6,6 +7,7 @@ export interface SessionData {
   visitorId?: string
   token?: string
   expired?: number
+  user?: UserResponse
 }
 
 export const sessionOptions = {

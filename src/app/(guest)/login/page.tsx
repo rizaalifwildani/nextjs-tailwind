@@ -1,48 +1,85 @@
-import CoreCard from "@/components/core/CoreCard"
+"use client"
+
 import CoreButton from "@/components/core/button/CoreButton"
 import CoreInput from "@/components/core/input/CoreInput"
-import { EnvelopeIcon, LockClosedIcon } from "@heroicons/react/24/outline"
+import CoreInputPassword from "@/components/core/input/CoreInputPassword"
+import { RouterConfig } from "@/configs/router.config"
+import { LoginRequest, LoginSchema } from "@/models/request/login.request"
+import AuthService from "@/services/auth.service"
+import { ShieldCheckIcon } from "@heroicons/react/24/outline"
+import { yupResolver } from "@hookform/resolvers/yup"
+import { Card, CardBody, CardHeader } from "@nextui-org/react"
+import { useRouter } from "next/navigation"
+import { useState } from "react"
+import { useForm } from "react-hook-form"
 
 export default function LoginPage() {
+  const appName = process.env.NEXT_PUBLIC_APP_NAME
+
+  const [loadingSubmit, setLoadingSubmit] = useState(false)
+
+  const router = useRouter()
+
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm<LoginRequest>({
+    resolver: yupResolver(LoginSchema),
+  })
+
+  const handleLogin = async (data: LoginRequest) => {
+    setLoadingSubmit(true)
+    const res = await AuthService.login(data)
+    if (res) {
+      router.push(RouterConfig.SUBMISSION)
+    } else {
+      setError("password", {
+        message: "*No.HP atau Password tidak cocok",
+      })
+    }
+    setLoadingSubmit(false)
+  }
+
   return (
     <section className="login-page">
       <div className="flex h-screen items-center justify-center">
-        <div className="w-90 md:w-2/3 lg:w-1/3 xl:w-1/3">
-          <CoreCard padding={30}>
-            <>
-              <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
-                Sign In to TailAdmin
-              </h2>
+        <div className="w-90 md:w-2/3 lg:w-1/4 xl:w-1/4">
+          <Card className="p-5">
+            <CardHeader className="flex flex-row items-center gap-2 text-title-sm font-bold">
+              <ShieldCheckIcon className="h-7 w-7" />
+              Sign In to {appName}
+            </CardHeader>
+            <CardBody>
+              <form
+                onSubmit={handleSubmit(handleLogin)}
+                className="flex flex-col gap-4"
+              >
+                <CoreInput
+                  label="No.HP"
+                  type="tel"
+                  placeholder="08xxxxxxxx"
+                  register={register("phoneNumber")}
+                  errorMessage={errors.phoneNumber?.message}
+                />
 
-              <form>
-                <div className="mb-4">
-                  <CoreInput
-                    type="email"
-                    label="Email"
-                    placeholder="Enter your email"
-                    appendIcon={<EnvelopeIcon className="h-5 w-5" />}
-                  />
-                </div>
+                <CoreInputPassword
+                  register={register("password")}
+                  errorMessage={errors.password?.message}
+                />
 
-                <div className="mb-6">
-                  <CoreInput
-                    type="password"
-                    label="Password"
-                    placeholder="Enter your password"
-                    appendIcon={<LockClosedIcon className="h-5 w-5" />}
-                  />
-                </div>
-
-                <div className="mb-5">
+                <div>
                   <CoreButton
                     type="submit"
                     label="Sign In"
                     className="h-10 w-full text-lg"
+                    loading={loadingSubmit}
                   />
                 </div>
               </form>
-            </>
-          </CoreCard>
+            </CardBody>
+          </Card>
         </div>
       </div>
     </section>

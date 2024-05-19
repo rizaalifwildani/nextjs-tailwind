@@ -1,0 +1,83 @@
+[
+  {
+    "id": "95cf241e-fa50-4361-99a5-be04479bdc77",
+    "name": "superadmin",
+    "displayName": "Super Admin",
+    "description": "User can manage all menu",
+    "permissions": [
+      {
+        "id": "85cf241e-fa50-4361-99a5-be04479bdc77",
+        "name": "submission",
+        "displayName": "Submission",
+        "description": "User can access the submission menu"
+      },
+      {
+        "id": "85cf241e-fa50-4361-99a5-be04479bdc76",
+        "name": "report",
+        "displayName": "Report",
+        "description": "User can access the report menu"
+      },
+      {
+        "id": "85cf241e-fa50-4361-99a5-be04479bdc75",
+        "name": "user-management",
+        "displayName": "User Management",
+        "description": "User can access the user management menu"
+      }
+    ]
+  },
+  {
+    "id": "95cf241e-fa50-4361-99a5-be04479bdc76",
+    "name": "checker",
+    "displayName": "Checker",
+    "description": "User can manage checker menu",
+    "permissions": [
+      {
+        "id": "85cf241e-fa50-4361-99a5-be04479bdc77",
+        "name": "submission",
+        "displayName": "Submission",
+        "description": "User can access the submission menu"
+      }
+    ]
+  },
+  {
+    "id": "95cf241e-fa50-4361-99a5-be04479bdc75",
+    "name": "maker",
+    "displayName": "Maker",
+    "description": "User can manage maker menu",
+    "permissions": [
+      {
+        "id": "85cf241e-fa50-4361-99a5-be04479bdc77",
+        "name": "submission",
+        "displayName": "Submission",
+        "description": "User can access the submission menu"
+      }
+    ]
+  },
+  {
+    "id": "95cf241e-fa50-4361-99a5-be04479bdc74",
+    "name": "lender",
+    "displayName": "Lender",
+    "description": "User can manage lender menu",
+    "permissions": [
+      {
+        "id": "85cf241e-fa50-4361-99a5-be04479bdc77",
+        "name": "submission",
+        "displayName": "Submission",
+        "description": "User can access the submission menu"
+      },
+      {
+        "id": "85cf241e-fa50-4361-99a5-be04479bdc76",
+        "name": "report",
+        "displayName": "Report",
+        "description": "User can access the report menu"
+      }
+    ]
+  },
+  {
+    "id": "95cf241e-fa50-4361-99a5-be04479bdc73",
+    "name": "sales",
+    "displayName": "Sales",
+    "description": "User can manage sales menu",
+    "permissions": []
+  }
+]
