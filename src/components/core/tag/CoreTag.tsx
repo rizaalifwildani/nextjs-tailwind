@@ -16,7 +16,11 @@ type Props = {
 export default function CoreTag({ color = "success", ...props }: Props) {
   return (
     <Chip
-      className={`capitalize ${props.className ?? ""} ${color == "default" ? "bg-blue-400 font-semibold text-white" : ""}`}
+      className={`
+        capitalize
+        ${props.className ?? ""}
+        ${color == "secondary" ? "bg-blue-400 font-semibold text-white" : ""}
+      `}
       color={color}
       size="sm"
       variant="flat"

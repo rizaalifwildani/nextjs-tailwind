@@ -85,7 +85,6 @@ export default function CoreTable({ height = "60vh", ...props }: ICoreTable) {
           }}
           isCompact
           showControls
-          showShadow
           total={10}
           initialPage={1}
           onChange={handlePagination}

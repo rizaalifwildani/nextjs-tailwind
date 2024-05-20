@@ -1,12 +1,12 @@
 "use client"
 
+import CoreLogo from "@/components/core/CoreLogo"
 import CoreButton from "@/components/core/button/CoreButton"
 import CoreInput from "@/components/core/input/CoreInput"
 import CoreInputPassword from "@/components/core/input/CoreInputPassword"
 import { RouterConfig } from "@/configs/router.config"
 import { LoginRequest, LoginSchema } from "@/models/request/login.request"
 import AuthService from "@/services/auth.service"
-import { ShieldCheckIcon } from "@heroicons/react/24/outline"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { Card, CardBody, CardHeader } from "@nextui-org/react"
 import { useRouter } from "next/navigation"
@@ -47,8 +47,8 @@ export default function LoginPage() {
       <div className="flex h-screen items-center justify-center">
         <div className="w-90 md:w-2/3 lg:w-1/4 xl:w-1/4">
           <Card className="p-5">
-            <CardHeader className="flex flex-row items-center gap-2 text-title-sm font-bold">
-              <ShieldCheckIcon className="h-7 w-7" />
+            <CardHeader className="flex flex-row items-center justify-center gap-2 text-title-md font-bold">
+              <CoreLogo width={35} />
               Sign In to {appName}
             </CardHeader>
             <CardBody>

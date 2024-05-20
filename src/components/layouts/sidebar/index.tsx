@@ -1,13 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 
+import CoreLogo from "@/components/core/CoreLogo"
 import DropdownIcons from "@/components/icons/DropdownIcons"
 import UserSettingIcon from "@/components/icons/UserSettingIcon"
 import { RouterConfig } from "@/configs/router.config"
 import StorageConfig from "@/configs/storage.config"
 import useProfile from "@/hooks/useProfile"
 import { LENDER, SUPERADMIN } from "@/models/response/role.response"
-import { BanknotesIcon, BuildingOffice2Icon } from "@heroicons/react/24/outline"
+import { BuildingOffice2Icon } from "@heroicons/react/24/outline"
 import { ClipboardDocumentIcon, FolderIcon } from "@heroicons/react/24/solid"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
@@ -87,8 +88,8 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
       >
         <Link href="/">
           <div className="flex items-center gap-3">
-            <BanknotesIcon className="h-10 w-10 text-primary" />
-            <h1 className="text-3xl text-primary">
+            <CoreLogo width={30} />
+            <h1 className="text-3xl font-extrabold text-primary">
               {process.env.NEXT_PUBLIC_APP_NAME}
             </h1>
           </div>
@@ -157,9 +158,9 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
               <ul className="mb-1 flex flex-col gap-1.5">
                 {/* <!-- Menu Item User Management --> */}
                 <SidebarLinkGroup
-                  activeCondition={
-                    pathname === "/auth" || pathname.includes("auth")
-                  }
+                  activeCondition={pathname.includes(
+                    RouterConfig.USER_MANAGEMENT,
+                  )}
                 >
                   {(handleClick, open) => {
                     return (
@@ -176,7 +177,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
                           px-4 py-2
                           font-medium
                           ${
-                            pathname === "/auth" || pathname.includes("auth")
+                            pathname.includes(RouterConfig.USER_MANAGEMENT)
                               ? "text-black"
                               : "text-bodydark1"
                           }
@@ -187,8 +188,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
                           dark:hover:bg-primary
                           dark:hover:text-black
                           ${
-                            (pathname === "/auth" ||
-                              pathname.includes("auth")) &&
+                            pathname.includes(RouterConfig.USER_MANAGEMENT) &&
                             "bg-primary dark:bg-primary"
                           }`}
                           onClick={(e) => {
@@ -274,6 +274,7 @@ type MenuItemProps = {
 }
 
 const MenuItem = ({ ...props }: MenuItemProps) => {
+  const pathname = usePathname()
   return (
     <ul className="mb-1.5 flex flex-col gap-1.5">
       {/* <!-- Menu Item --> */}
@@ -290,14 +291,14 @@ const MenuItem = ({ ...props }: MenuItemProps) => {
             px-4
             py-2
             font-medium
-            ${props.pathname === "/" ? "text-black" : "text-bodydark1"}
+            ${props.pathname === pathname ? "text-black" : "text-bodydark1"}
             duration-300
             ease-in-out
             hover:bg-primary
             hover:text-black
             dark:hover:bg-primary
             dark:hover:text-black
-            ${props.pathname === "/" && "bg-primary dark:bg-primary"}
+            ${props.pathname === pathname && "bg-primary dark:bg-primary"}
           `}
         >
           {props.icon}

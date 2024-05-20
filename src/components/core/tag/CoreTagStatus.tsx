@@ -16,10 +16,10 @@ export default function CoreTagStatus({ ...props }: Props) {
     | undefined
   switch (props.status) {
     case StatusUtil.OPEN:
-      color = "default"
+      color = "secondary"
       break
     case StatusUtil.REOPEN:
-      color = "default"
+      color = "secondary"
       break
     case StatusUtil.INPROCESS:
       color = "warning"
@@ -28,7 +28,7 @@ export default function CoreTagStatus({ ...props }: Props) {
       color = "success"
       break
     case StatusUtil.DISBURSE:
-      color = "success"
+      color = "default"
       break
     case StatusUtil.REJECTED:
       color = "danger"
