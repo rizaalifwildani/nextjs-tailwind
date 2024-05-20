@@ -3,6 +3,7 @@
 import dataCompany from "@/assets/data/companies.json"
 import dataSales from "@/assets/data/sales.json"
 import dataSubmission from "@/assets/data/submissions.json"
+import dataLender from "@/assets/data/users.json"
 import CoreAlert from "@/components/core/CoreAlert"
 import CoreButton from "@/components/core/button/CoreButton"
 import CoreInput from "@/components/core/input/CoreInput"
@@ -13,11 +14,14 @@ import CoreInputSelect, {
 import CoreInputTextArea from "@/components/core/input/CoreInputTextArea"
 import CoreModalPasswordVerification from "@/components/core/modal/CoreModalPasswordVerification"
 import { RouterConfig } from "@/configs/router.config"
+import useProfile from "@/hooks/useProfile"
 import {
   SubmissionRequest,
   SubmissionSchema,
 } from "@/models/request/submission.request"
+import { CHECKER, LENDER, MAKER } from "@/models/response/role.response"
 import { SubmissionResponse } from "@/models/response/submission.response"
+import StatusUtil from "@/utils/status.util"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { Spinner, useDisclosure } from "@nextui-org/react"
 import { useRouter, useSearchParams } from "next/navigation"
@@ -46,6 +50,7 @@ export default function SubmissionForm() {
   ]
   const [companies, setCompanies] = useState<ICoreInputOptions[]>([])
   const [sales, setSales] = useState<ICoreInputOptions[]>([])
+  const [lenders, setLenders] = useState<ICoreInputOptions[]>([])
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const router = useRouter()
   const [currentActivity, setCurrentActivity] = useState(SUBMIT)
@@ -57,6 +62,13 @@ export default function SubmissionForm() {
   const query = useSearchParams()
   const [loadingData, setLoadingData] = useState(true)
   const [data, setData] = useState<SubmissionResponse | undefined>()
+
+  const [enableReject, setEnableReject] = useState(false)
+  const [enableSubmit, setEnableSubmit] = useState(false)
+  const [disableAllForm, setDisableAllForm] = useState(true)
+  const [disableAmount, setDisableAmount] = useState(true)
+
+  const { profile } = useProfile()
 
   useEffect(() => {
     const fetchCompany = () => {
@@ -87,6 +99,22 @@ export default function SubmissionForm() {
   }, [])
 
   useEffect(() => {
+    const fetchLenders = () => {
+      const masterListLenders: ICoreInputOptions[] = []
+      dataLender.forEach((v) => {
+        if (v.role.name == LENDER) {
+          masterListLenders.push({
+            label: v.name,
+            value: v.id,
+          })
+          setLenders(masterListLenders)
+        }
+      })
+    }
+    fetchLenders()
+  }, [])
+
+  useEffect(() => {
     const fetchData = () => {
       setLoadingData(true)
       const id = query.get("q")
@@ -94,12 +122,33 @@ export default function SubmissionForm() {
         const find = dataSubmission.find((v) => v.id == id)
         if (find) {
           setData(find)
+          if (find.status == StatusUtil.INPROCESS) {
+            if (profile?.role.name == MAKER) {
+              setDisableAllForm(true)
+              setDisableAmount(true)
+            } else if (profile?.role.name == CHECKER) {
+              setDisableAllForm(true)
+              setDisableAmount(false)
+            }
+          }
+          if (
+            find.status == StatusUtil.OPEN ||
+            find.status == StatusUtil.REOPEN ||
+            (find.status == StatusUtil.INPROCESS &&
+              profile?.role.name == CHECKER)
+          ) {
+            setEnableReject(true)
+            setEnableSubmit(true)
+          } else {
+            setEnableReject(false)
+            setEnableSubmit(false)
+          }
         }
       }
       setLoadingData(false)
     }
     fetchData()
-  }, [query])
+  }, [query, profile])
 
   const {
     register,
@@ -177,6 +226,7 @@ export default function SubmissionForm() {
                     })}
                     label="Sales ID*"
                     options={sales}
+                    disabled={disableAllForm}
                     errorMessage={errors.salesId?.message}
                   />
                   <CoreInputSelect
@@ -185,6 +235,7 @@ export default function SubmissionForm() {
                     })}
                     label="Company ID*"
                     options={companies}
+                    disabled={disableAllForm}
                     errorMessage={errors.companyId?.message}
                   />
                   <CoreInput
@@ -192,6 +243,7 @@ export default function SubmissionForm() {
                       value: data.productId,
                     })}
                     label="Product ID"
+                    disabled={disableAllForm}
                     errorMessage={errors.productId?.message}
                   />
                 </div>
@@ -204,6 +256,7 @@ export default function SubmissionForm() {
                       value: data.customerName,
                     })}
                     label="Nama Nasabah*"
+                    disabled={disableAllForm}
                     errorMessage={errors.customerName?.message}
                   />
                   <CoreInput
@@ -211,6 +264,7 @@ export default function SubmissionForm() {
                       value: data.ktp,
                     })}
                     label="No.KTP*"
+                    disabled={disableAllForm}
                     errorMessage={errors.ktp?.message}
                   />
                   <CoreInput
@@ -218,6 +272,7 @@ export default function SubmissionForm() {
                       value: data.placeOfBirth,
                     })}
                     label="Tempat Lahir*"
+                    disabled={disableAllForm}
                     errorMessage={errors.placeOfBirth?.message}
                   />
                   <CoreInput
@@ -226,6 +281,7 @@ export default function SubmissionForm() {
                     })}
                     label="Tanggal Lahir*"
                     type="date"
+                    disabled={disableAllForm}
                     errorMessage={errors.birthDate?.message}
                   />
                   <CoreInput
@@ -234,6 +290,7 @@ export default function SubmissionForm() {
                     })}
                     label="No.HP*"
                     type="tel"
+                    disabled={disableAllForm}
                     errorMessage={errors.phoneNumber?.message}
                   />
                   <CoreInput
@@ -242,6 +299,7 @@ export default function SubmissionForm() {
                     })}
                     label="No.WhatsApp*"
                     type="tel"
+                    disabled={disableAllForm}
                     errorMessage={errors.whatsAppNumber?.message}
                   />
                   <CoreInput
@@ -250,6 +308,7 @@ export default function SubmissionForm() {
                     })}
                     label="Email"
                     type="email"
+                    disabled={disableAllForm}
                     errorMessage={errors.email?.message}
                   />
                 </div>
@@ -259,6 +318,7 @@ export default function SubmissionForm() {
                       value: data.address,
                     })}
                     label="Alamat KTP*"
+                    disabled={disableAllForm}
                     errorMessage={errors.address?.message}
                   />
                   <CoreInputTextArea
@@ -266,6 +326,7 @@ export default function SubmissionForm() {
                       value: data.residenceAddress,
                     })}
                     label="Alamat Domisili*"
+                    disabled={disableAllForm}
                     errorMessage={errors.residenceAddress?.message}
                   />
                 </div>
@@ -275,6 +336,7 @@ export default function SubmissionForm() {
                       value: data.subdistrict,
                     })}
                     label="Kecamatan"
+                    disabled={disableAllForm}
                     errorMessage={errors.subdistrict?.message}
                   />
                   <CoreInput
@@ -282,14 +344,16 @@ export default function SubmissionForm() {
                       value: data.city,
                     })}
                     label="Kota*"
+                    disabled={disableAllForm}
                     errorMessage={errors.city?.message}
                   />
                   <CoreInput
                     register={register("postalCode", {
-                      value: Number(data.postalCode),
+                      value: data.postalCode,
                     })}
                     label="Kode Pos"
                     type="number"
+                    disabled={disableAllForm}
                     errorMessage={errors.postalCode?.message}
                   />
                   <CoreInputSelect
@@ -298,6 +362,7 @@ export default function SubmissionForm() {
                     })}
                     label="Jenis Kelamin"
                     options={masterListGenders}
+                    disabled={disableAllForm}
                     errorMessage={errors.gender?.message}
                   />
                   <CoreInput
@@ -305,6 +370,7 @@ export default function SubmissionForm() {
                       value: data.status,
                     })}
                     label="Status"
+                    disabled={disableAllForm}
                     errorMessage={errors.status?.message}
                   />
                   <CoreInput
@@ -312,6 +378,7 @@ export default function SubmissionForm() {
                       value: data.work,
                     })}
                     label="Pekerjaan*"
+                    disabled={disableAllForm}
                     errorMessage={errors.work?.message}
                   />
                   <CoreInput
@@ -319,6 +386,7 @@ export default function SubmissionForm() {
                       value: data.education,
                     })}
                     label="Pendidikan"
+                    disabled={disableAllForm}
                     errorMessage={errors.education?.message}
                   />
                   <CoreInput
@@ -326,6 +394,7 @@ export default function SubmissionForm() {
                       value: data.biologicalMotherMaidenName,
                     })}
                     label="Nama Gadis Ibu Kandung*"
+                    disabled={disableAllForm}
                     errorMessage={errors.biologicalMotherMaidenName?.message}
                   />
                   <CoreInput
@@ -333,6 +402,7 @@ export default function SubmissionForm() {
                       value: data.emergencyContactName,
                     })}
                     label="Nama Emergency Contact*"
+                    disabled={disableAllForm}
                     errorMessage={errors.emergencyContactName?.message}
                   />
                   <CoreInput
@@ -341,6 +411,7 @@ export default function SubmissionForm() {
                     })}
                     label="No.HP Emergency Contact*"
                     type="tel"
+                    disabled={disableAllForm}
                     errorMessage={errors.emergencyContactPhone?.message}
                   />
                   <CoreInput
@@ -348,6 +419,7 @@ export default function SubmissionForm() {
                       value: data.emergencyContactKtp,
                     })}
                     label="No.KTP Emergency Contact*"
+                    disabled={disableAllForm}
                     errorMessage={errors.emergencyContactKtp?.message}
                   />
                 </div>
@@ -357,6 +429,7 @@ export default function SubmissionForm() {
                       value: data.emergencyContactAddress,
                     })}
                     label="Alamat Emergency Contact*"
+                    disabled={disableAllForm}
                     errorMessage={errors.emergencyContactAddress?.message}
                   />
                 </div>
@@ -366,6 +439,7 @@ export default function SubmissionForm() {
                       value: `${data.dependentsTotal}`,
                     })}
                     label="Jumlah Tanggungan"
+                    disabled={disableAllForm}
                     errorMessage={errors.dependentsTotal?.message}
                   />
                   <CoreInput
@@ -374,6 +448,7 @@ export default function SubmissionForm() {
                     })}
                     label="No.NPWP"
                     type="number"
+                    disabled={disableAllForm}
                     errorMessage={errors.npwpNumber?.message}
                   />
                   <CoreInput
@@ -381,6 +456,7 @@ export default function SubmissionForm() {
                       value: data.lengthOfWork,
                     })}
                     label="Lama Bekerja*"
+                    disabled={disableAllForm}
                     errorMessage={errors.lengthOfWork?.message}
                   />
                 </div>
@@ -390,6 +466,7 @@ export default function SubmissionForm() {
                       value: data.workAddress,
                     })}
                     label="Alamat Pekerjaan"
+                    disabled={disableAllForm}
                     errorMessage={errors.workAddress?.message}
                   />
                 </div>
@@ -399,6 +476,7 @@ export default function SubmissionForm() {
                       value: data.workSubdistrict,
                     })}
                     label="Kecamatan Pekerjaan"
+                    disabled={disableAllForm}
                     errorMessage={errors.workSubdistrict?.message}
                   />
                   <CoreInput
@@ -406,14 +484,16 @@ export default function SubmissionForm() {
                       value: data.workCity,
                     })}
                     label="Kota Pekerjaan"
+                    disabled={disableAllForm}
                     errorMessage={errors.workCity?.message}
                   />
                   <CoreInput
                     register={register("workPostalCode", {
-                      value: Number(data.workPostalCode),
+                      value: data.workPostalCode,
                     })}
                     label="Kode Pos Pekerjaan"
                     type="number"
+                    disabled={disableAllForm}
                     errorMessage={errors.workPostalCode?.message}
                   />
                   <CoreInput
@@ -422,6 +502,7 @@ export default function SubmissionForm() {
                     })}
                     label="Penghasilan Perbulan*"
                     type="number"
+                    disabled={disableAllForm}
                     errorMessage={errors.monthlyIncome?.message}
                   />
                   <CoreInput
@@ -430,6 +511,7 @@ export default function SubmissionForm() {
                     })}
                     label="Penghasilan Pertahun*"
                     type="number"
+                    disabled={disableAllForm}
                     errorMessage={errors.annualIncome?.message}
                   />
                   <CoreInput
@@ -437,6 +519,7 @@ export default function SubmissionForm() {
                       value: `${data.anotherIncome}`,
                     })}
                     label="Penghasilan Lainnya"
+                    disabled={disableAllForm}
                     errorMessage={errors.anotherIncome?.message}
                   />
                 </div>
@@ -450,14 +533,32 @@ export default function SubmissionForm() {
                     })}
                     label="Nominal Pengajuan*"
                     type="number"
+                    disabled={disableAmount}
                     errorMessage={errors.submissionAmount?.message}
                   />
+                  {profile?.role.name == CHECKER && (
+                    <CoreInputSelect
+                      register={register("lenderId", {
+                        value: data.lenderId,
+                      })}
+                      label="Lender*"
+                      options={lenders}
+                      disabled={disableAllForm}
+                      errorMessage={errors.lenderId?.message}
+                    />
+                  )}
                 </div>
                 <div className="mt-5 grid grid-cols-1 gap-6 md:grid-cols-3">
                   <CoreInputFile
                     label="Photo KTP*"
+                    initialValue={data?.photoKtp}
+                    disabled={disableAllForm}
                     errorMessage={
-                      !photoKtp ? "*Photo KTP wajib diisi" : undefined
+                      !photoKtp
+                        ? data?.photoKtp
+                          ? undefined
+                          : "*Photo KTP wajib diisi"
+                        : undefined
                     }
                     callback={(buffer) => {
                       setPhotoKtp(buffer)
@@ -465,44 +566,59 @@ export default function SubmissionForm() {
                   />
                   <CoreInputFile
                     label="Photo NPWP"
+                    initialValue={data?.photoNpwp}
+                    disabled={disableAllForm}
                     callback={(buffer) => setPhotoNpwp(buffer)}
                   />
                   <CoreInputFile
                     label="Photo Selfie dengan KTP*"
+                    initialValue={data?.photoSelfie}
+                    disabled={disableAllForm}
                     errorMessage={
                       !photoSelfie
-                        ? "*Photo Selfie dengan KTP wajib diisi"
+                        ? data?.photoSelfie
+                          ? undefined
+                          : "*Photo Selfie dengan KTP wajib diisi"
                         : undefined
                     }
                     callback={(buffer) => setPhotoSelfie(buffer)}
                   />
                 </div>
-                <div className="mt-5 grid grid-cols-1 gap-6 md:grid-cols-2">
-                  <CoreInputTextArea
-                    register={register("verificationReason", {
-                      value: data.verificationReason,
-                    })}
-                    label="Reason Verifikasi*"
-                    errorMessage={errors.verificationReason?.message}
-                  />
-                </div>
-                <div className="mt-5 flex flex-row gap-2">
-                  <CoreButton
-                    label="Reject"
-                    color="danger"
-                    className="w-full md:w-auto"
-                    onClick={() => {
-                      setCurrentActivity(REJECT)
-                      onOpen()
-                    }}
-                  />
-                  <CoreButton
-                    type="submit"
-                    label="Submit"
-                    className="w-full md:w-auto"
-                    loading={loadingSubmit}
-                  />
-                </div>
+                {enableReject && (
+                  <div className="mt-5 grid grid-cols-1 gap-6 md:grid-cols-2">
+                    <CoreInputTextArea
+                      register={register("verificationReason", {
+                        value: data.verificationReason,
+                      })}
+                      label="Reason Verifikasi*"
+                      disabled={disableAllForm}
+                      errorMessage={errors.verificationReason?.message}
+                    />
+                  </div>
+                )}
+                {!loadingData && data && (
+                  <div className="mt-5 flex flex-row gap-2">
+                    {enableReject && (
+                      <CoreButton
+                        label="Reject"
+                        color="danger"
+                        className="w-full md:w-auto"
+                        onClick={() => {
+                          setCurrentActivity(REJECT)
+                          onOpen()
+                        }}
+                      />
+                    )}
+                    {enableSubmit && (
+                      <CoreButton
+                        type="submit"
+                        label="Submit"
+                        className="w-full md:w-auto"
+                        loading={loadingSubmit}
+                      />
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           </form>

@@ -38,7 +38,7 @@ export const SubmissionSchema = yup.object().shape({
     .nonNullable(),
   subdistrict: yup.string().optional().nullable(),
   city: yup.string().required("*Kota wajib diisi").nonNullable(),
-  postalCode: yup.number().optional().typeError("Kode Pos tidak valid"),
+  postalCode: yup.number().optional().nullable(),
   gender: yup.string().optional().nullable(),
   status: yup.string().optional().nullable(),
   work: yup.string().required("*Pekerjaan wajib diisi").nonNullable(),
@@ -96,6 +96,7 @@ export const SubmissionSchema = yup.object().shape({
     .string()
     .required("*Response Verifikasi wajib diisi")
     .nonNullable(),
+  lenderId: yup.string().optional().nullable(),
 })
 
 export type SubmissionRequest = yup.InferType<typeof SubmissionSchema>

@@ -110,8 +110,8 @@
     "password": "1234",
     "role": {
       "id": "95cf241e-fa50-4361-99a5-be04479bdc73",
-      "name": "lender",
-      "displayName": "Lender",
+      "name": "sales",
+      "displayName": "Sales",
       "description": "User can manage sales menu",
       "permissions": []
     }

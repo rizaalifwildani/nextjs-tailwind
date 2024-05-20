@@ -18,7 +18,7 @@ export interface SubmissionResponse {
   residenceAddress?: string
   subdistrict?: string
   city?: string
-  postalCode?: string
+  postalCode?: number
   gender?: string
   work?: string
   education?: string
@@ -33,10 +33,13 @@ export interface SubmissionResponse {
   workAddress?: string
   workSubdistrict?: string
   workCity?: string
-  workPostalCode?: string
+  workPostalCode?: number
   monthlyIncome?: number
   annualIncome?: number
   anotherIncome?: number
   verificationReason?: string
   lenderId?: string
+  photoKtp?: string
+  photoNpwp?: string
+  photoSelfie?: string
 }

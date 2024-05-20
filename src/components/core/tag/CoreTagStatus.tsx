@@ -1,3 +1,4 @@
+import StatusUtil from "@/utils/status.util"
 import CoreTag from "./CoreTag"
 
 type Props = {
@@ -14,22 +15,22 @@ export default function CoreTagStatus({ ...props }: Props) {
     | "secondary"
     | undefined
   switch (props.status) {
-    case "open":
+    case StatusUtil.OPEN:
       color = "default"
       break
-    case "reopen":
+    case StatusUtil.REOPEN:
       color = "default"
       break
-    case "inprocess":
+    case StatusUtil.INPROCESS:
       color = "warning"
       break
-    case "approved":
+    case StatusUtil.APPROVED:
       color = "success"
       break
-    case "disburse":
+    case StatusUtil.DISBURSE:
       color = "success"
       break
-    case "rejected":
+    case StatusUtil.REJECTED:
       color = "danger"
       break
     default:

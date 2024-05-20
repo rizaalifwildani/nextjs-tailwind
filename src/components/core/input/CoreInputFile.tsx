@@ -6,10 +6,12 @@ import Dropzone from "react-dropzone"
 type Props = {
   label?: string
   errorMessage?: string
+  initialValue?: string
+  disabled?: boolean
   callback?: (buffer: ArrayBuffer) => void
 }
 
-export default function CoreInputFile({ ...props }: Props) {
+export default function CoreInputFile({ disabled = false, ...props }: Props) {
   const [activeImage, setActiveImage] = useState<string | undefined>()
   const handleFile = (file: File) => {
     const reader = new FileReader()
@@ -37,6 +39,7 @@ export default function CoreInputFile({ ...props }: Props) {
         </label>
       )}
       <Dropzone
+        disabled={disabled}
         onDrop={(file) => {
           if (file.length > 0) {
             handleFile(file[0])
@@ -48,16 +51,18 @@ export default function CoreInputFile({ ...props }: Props) {
           <section>
             <div
               {...getRootProps()}
-              className="dark:bg-box-input-dark bg-box-input relative rounded-xl border-2 border-dashed border-stroke px-4 py-8 dark:border-bodydark"
+              className="relative rounded-xl border-2 border-dashed border-stroke bg-box-input px-4 py-8 dark:border-bodydark dark:bg-box-input-dark"
             >
               <input {...getInputProps()} />
               <div className="flex w-full flex-col items-center gap-3">
-                {!activeImage && <PhotoIcon className="h-20 w-20" />}
-                {activeImage && (
+                {!activeImage && !props.initialValue && (
+                  <PhotoIcon className="h-20 w-20" />
+                )}
+                {(activeImage || props.initialValue) && (
                   <Image
                     className="h-20 w-20 object-cover"
                     alt="img-upload"
-                    src={activeImage}
+                    src={activeImage ?? props.initialValue}
                   />
                 )}
                 <span className="text-sm">
@@ -69,7 +74,7 @@ export default function CoreInputFile({ ...props }: Props) {
         )}
       </Dropzone>
       {props.errorMessage != null && props.errorMessage.length > 0 && (
-        <span className="text-error text-xs">{props.errorMessage}</span>
+        <span className="text-xs text-error">{props.errorMessage}</span>
       )}
     </div>
   )

@@ -10,6 +10,7 @@ type Props = {
   appendIconOnClick?: () => void
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   register?: any
+  disabled?: boolean
   errorMessage?: string
 }
 
@@ -17,6 +18,7 @@ export default function CoreInput({
   className = "",
   placeholder = ". . .",
   type = "text",
+  disabled = false,
   ...props
 }: Props) {
   return (
@@ -28,6 +30,7 @@ export default function CoreInput({
         labelPlacement="outside"
         className={className}
         {...props.register}
+        disabled={disabled}
         errorMessage={props.errorMessage}
         isInvalid={props.errorMessage && props.errorMessage.length > 0}
         endContent={

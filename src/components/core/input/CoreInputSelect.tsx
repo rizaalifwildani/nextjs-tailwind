@@ -10,6 +10,7 @@ type Props = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   register?: any
   errorMessage?: string
+  disabled?: boolean
   onChange?: (e: string) => void
 }
 
@@ -18,7 +19,7 @@ export interface ICoreInputOptions {
   value: string | number
 }
 
-export default function CoreInputSelect({ ...props }: Props) {
+export default function CoreInputSelect({ disabled = false, ...props }: Props) {
   const [value, setValue] = useState(props.initialValue)
 
   return (
@@ -34,6 +35,7 @@ export default function CoreInputSelect({ ...props }: Props) {
         selectedKeys={props.initialValue ? [`${value}`] : undefined}
         errorMessage={props.errorMessage}
         isInvalid={props.errorMessage && props.errorMessage.length > 0}
+        isDisabled={disabled}
         onChange={(e) => {
           setValue(e.target.value)
           if (props.onChange) {
